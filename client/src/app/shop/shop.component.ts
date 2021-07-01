@@ -11,10 +11,11 @@ import { ShopService } from './shop.service';
   styleUrls: ['./shop.component.scss'],
 })
 export class ShopComponent implements OnInit {
-  products?: IProduct[] = [];
-  brands!: IBrand[];
-  types!: IType[];
-  shopParams! : ShopParams;
+  products: IProduct[];
+  brands: IBrand[];
+  types: IType[];
+  shopParams = new ShopParams();
+  totalCount: number = 0;
   sortOptions = [
     { name: 'Alphabetical', value: 'name' },
     { name: 'Price: Low to High', value: 'priceAsc' },
@@ -30,18 +31,19 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts() {
-    this.shopService
-      .getProducts(this.shopParams)
-      .subscribe(
-        (response) => {
-          this.products = response!.data;
-          this.shopParams.pageSize = response!.pageSize;
-          this.shopParams.pageNumber = response!.pageIndex;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    this.shopService.getProducts(this.shopParams).subscribe(
+      (response) => {
+        this.products = response!.data;
+        this.shopParams.pageSize = response!.pageSize;
+        this.shopParams.pageNumber = response!.pageIndex;
+        this.totalCount = response!.count
+        console.log(this.totalCount);
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   getBrands() {
@@ -76,9 +78,14 @@ export class ShopComponent implements OnInit {
     this.getProducts();
   }
 
-  onSort(sort : string)
-  {
+  onSort(sort: string) {
     this.shopParams.sort = sort;
     this.getProducts();
+  }
+
+  onPageChange(event: any){
+    this.shopParams.pageNumber = event;
+    this.getProducts();
+
   }
 }
