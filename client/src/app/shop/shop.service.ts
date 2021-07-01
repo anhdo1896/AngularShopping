@@ -13,7 +13,7 @@ export class ShopService {
   baseUrl = 'https://localhost:5001/api/';
   constructor(private http: HttpClient) {}
 
-  getProducts(shopParams: ShopParams) {
+  getProducts(shopParams: ShopParams)  {
     let params = new HttpParams();
 
     if (shopParams.brandId != 0) {
@@ -26,9 +26,14 @@ export class ShopService {
       params = params.append('typeId', shopParams.typeId.toString());
     }
 
+    if(shopParams.search)
+    {
+      params = params.append('search', shopParams.search);
+    }
     params = params.append('sort', shopParams.sort);
     params = params.append('pageIndex', shopParams.pageNumber.toString());
     params = params.append('pageSize', shopParams.pageSize.toString());
+   
 
     return this.http
       .get<IPagination>(this.baseUrl + 'product', {
@@ -49,4 +54,6 @@ export class ShopService {
   getTypes() {
     return this.http.get<IType[]>(this.baseUrl + 'product/types');
   }
+
+ 
 }

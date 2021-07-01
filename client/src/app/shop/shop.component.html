@@ -44,15 +44,14 @@
         [pageSize] = "this.shopParams.pageSize"
         [totalPage] = "this.totalCount"
       >
-
       </app-paging-header>
-      <form class="form-inline">
+      <div class="form-inline">
         <div class="form-group">
-          <input type="text" class="form-control mr-2" placeholder="Search" />
-          <button class="btn btn-outline-primary my-2">Search</button>
-          <button class="btn btn-outline-success ml-2 my-2">Reset</button>
+          <input type="text" (keyup.enter)="onSearch()" class="form-control mr-2" #search placeholder="Search" />
+          <button class="btn btn-outline-primary my-2" (click) = "onSearch()">Search</button>
+          <button class="btn btn-outline-success ml-2 my-2" (click) = "onReset()">Reset</button>
         </div>
-      </form>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-4 mb-4" *ngFor="let item of products">
@@ -63,20 +62,9 @@
       <app-pager
         [pageSize] = "this.shopParams.pageSize"
         [totalCount] = "this.totalCount"
-        [pageChanged] = "onPageChange($event)"
+        (pageChanged) = "onPageChange($event)"
       >
-
       </app-pager>
-      <pagination
-        [boundaryLinks]="true"
-        [totalItems]="this.totalCount"
-        (pageChanged)="onPageChange($event)"
-        [itemsPerPage]="this.shopParams.pageSize"
-        previousText="&lsaquo;"
-        nextText="&rsaquo;"
-        firstText="&laquo;"
-        lastText="&raquo;">
-      </pagination>
     </div>
   </div>
 </div>
