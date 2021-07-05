@@ -2,16 +2,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
-using Core.Interfaces;
 using API.Helpers;
 using API.Middlewares;
-using Microsoft.AspNetCore.Mvc;
-using API.Errors;
-using System.Linq;
 using API.Extensions;
 
 namespace API

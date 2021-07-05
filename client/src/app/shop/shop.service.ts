@@ -18,8 +18,6 @@ export class ShopService {
     let params = new HttpParams();
 
     if (shopParams.brandId != 0) {
-      console.log(shopParams.brandId);
-
       params = params.append('brandId', shopParams.brandId.toString());
     }
 
