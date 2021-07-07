@@ -18,7 +18,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      delay(1000),
       catchError((error) => {
         if (error) {
           if (error.status === 400) {
@@ -32,7 +31,9 @@ export class ErrorInterceptor implements HttpInterceptor {
             this.router.navigateByUrl('/not-found');
           }
           if (error.status === 500) {
-            const navigationExtras : NavigationExtras = { state : {error: error.error}}
+            const navigationExtras: NavigationExtras = {
+              state: { error: error.error },
+            };
             this.router.navigateByUrl('/server-error', navigationExtras);
           }
         }
