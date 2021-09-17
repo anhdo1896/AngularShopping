@@ -6,11 +6,12 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { ShopModule } from './shop/shop.module';
+import { HomeModule } from './home/home.module';
 //components
 import { AppComponent } from './app.component';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
-import { HomeModule } from './home/home.module';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,7 @@ import { HomeModule } from './home/home.module';
     CoreModule,
     ShopModule,
     NgxSpinnerModule,
-    HomeModule
+    HomeModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
