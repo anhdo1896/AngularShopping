@@ -29,42 +29,42 @@ namespace API.Controllers
 
             var order = await _orderSevice.CreateOrderAsync(email, orderDto.DeliveryMethodId, orderDto.BasketId, address);
 
-            if(order == null) return BadRequest(new ApiResponse(400,"Problem creating order"));
+            if (order == null) return BadRequest(new ApiResponse(400, "Problem creating order"));
 
             return Ok(order);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser()
         {
             var email = HttpContext.User.RetrieveEmailFromPricipal();
 
             var orders = await _orderSevice.GetOdersForUserAsync(email);
 
-            if(orders == null) return BadRequest(new ApiResponse(400,"Problem get order"));
+            if (orders == null) return BadRequest(new ApiResponse(400, "Problem get order"));
 
-            return Ok(orders);
+               return Ok(_mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDto>>(orders));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetOrdersByIdForUser(int id)
+        public async Task<ActionResult<OrderToReturnDto>> GetOrdersByIdForUser(int id)
         {
             var email = HttpContext.User.RetrieveEmailFromPricipal();
 
-            var order = await _orderSevice.GetOrderByIdAsync(id,email);
+            var order = await _orderSevice.GetOrderByIdAsync(id, email);
 
-            if(order == null) return BadRequest(new ApiResponse(400,"Problem get order by Id"));
+            if (order == null) return BadRequest(new ApiResponse(400, "Problem get order by Id"));
 
-            return Ok(order);
+            return Ok(_mapper.Map<Order, OrderToReturnDto>(order));
         }
 
         [HttpGet("deliveryMethods")]
         public async Task<ActionResult<IReadOnlyList<Order>>> GetDeliveryMethod()
         {
-           
+
             var deliveryMethods = await _orderSevice.GetDeliveryMethodsAsync();
 
-            if(deliveryMethods == null) return BadRequest(new ApiResponse(400,"Problem get delivery methods"));
+            if (deliveryMethods == null) return BadRequest(new ApiResponse(400, "Problem get delivery methods"));
 
             return Ok(deliveryMethods);
         }
