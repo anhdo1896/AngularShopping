@@ -6,10 +6,12 @@ using API.Extensions;
 using AutoMapper;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class OrderController : BaseApiController
     {
         private readonly IOrderService _orderSevice;
@@ -59,7 +61,7 @@ namespace API.Controllers
         }
 
         [HttpGet("deliveryMethods")]
-        public async Task<ActionResult<IReadOnlyList<Order>>> GetDeliveryMethod()
+        public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethod()
         {
 
             var deliveryMethods = await _orderSevice.GetDeliveryMethodsAsync();
