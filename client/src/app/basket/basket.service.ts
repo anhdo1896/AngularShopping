@@ -9,6 +9,7 @@ import {
   IBasketItem,
   IBasketTotals,
 } from '../shared/models/basket';
+import { IDeliveryMethod } from '../shared/models/IDeliveryMethod';
 import { IProduct } from '../shared/models/product';
 
 @Injectable({
@@ -20,9 +21,13 @@ export class BasketService {
   private basketTotalSource = new BehaviorSubject<IBasketTotals>(null);
   basket$ = this.basketSource.asObservable();
   basketTotal$ = this.basketTotalSource.asObservable();
-
+  shipping = 0;
   constructor(private http: HttpClient) {}
 
+  shippingPrice(deliveryMethod: IDeliveryMethod) {
+    this.shipping = deliveryMethod.price;
+    this.caculateTotals();
+  }
   getBasket(id: string) {
     return this.http.get<IBasket>(this.baseUrl + 'basket?id=' + id).pipe(
       map((basket: IBasket) => {
@@ -73,7 +78,7 @@ export class BasketService {
       this.removeItemFromBasket(item);
     }
   }
-   removeItemFromBasket(item: IBasketItem) {
+  removeItemFromBasket(item: IBasketItem) {
     const basket = this.getCurrentBasketValue();
     if (basket.items.some((i) => i.id === item.id)) {
       basket.items = basket.items.filter((x) => x.id !== item.id);
@@ -84,6 +89,17 @@ export class BasketService {
       this.deleteBasket(basket);
     }
   }
+
+  deleteBasketLocal(id: string) {
+    this.basketSource.next(null);
+    this.basketTotalSource.next(null);
+    localStorage.removeItem('basket_id');
+  }
+  
+  getCurrentBasketValue() {
+    return this.basketSource.value;
+  }
+
   private deleteBasket(basket: IBasket) {
     return this.http.delete(this.baseUrl + 'basket?id=' + basket.id).subscribe(
       () => {
@@ -97,13 +113,9 @@ export class BasketService {
     );
   }
 
-  private getCurrentBasketValue() {
-    return this.basketSource.value;
-  }
-
   private caculateTotals() {
     const basket = this.getCurrentBasketValue();
-    const shipping = 0;
+    const shipping = this.shipping;
     const subtotal = basket.items.reduce((a, b) => b.price * b.quantity + a, 0);
     const total = subtotal + shipping;
     this.basketTotalSource.next({ shipping, total, subtotal });
