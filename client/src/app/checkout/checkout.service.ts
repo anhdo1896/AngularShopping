@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IDeliveryMethod } from '../shared/models/IDeliveryMethod';
+import { IDeliveryMethod } from '../shared/models/deliveryMethod';
 import { IOrder, IOrderCreated } from '../shared/models/order';
 
 @Injectable({
