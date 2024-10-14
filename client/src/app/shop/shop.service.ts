@@ -7,15 +7,16 @@ import { map } from 'rxjs/operators';
 import { ShopParams } from '../shared/models/shopParams';
 import { IProduct } from '../shared/models/product';
 import { of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl =  environment.apiUrl;
   products: IProduct[] = [];
-  brands: IBrand[]=[];
-  types: IType[]=[];
+  brands: IBrand[] = [];
+  types: IType[] = [];
   pagination = new Pagination();
   shopParams = new ShopParams();
   productCache = new Map();
@@ -23,13 +24,15 @@ export class ShopService {
   constructor(private http: HttpClient) {}
 
   getProducts(useCache: boolean) {
-    if(useCache === false){
+    if (useCache === false) {
       this.productCache = new Map();
     }
 
-    if(this.productCache.size > 0 && useCache === true){
-      if(this.productCache.has(Object.values(this.shopParams).join('-'))){
-        this.pagination.data = this.productCache.get(Object.values(this.shopParams).join('-'));
+    if (this.productCache.size > 0 && useCache === true) {
+      if (this.productCache.has(Object.values(this.shopParams).join('-'))) {
+        this.pagination.data = this.productCache.get(
+          Object.values(this.shopParams).join('-')
+        );
         return of(this.pagination);
       }
     }
@@ -58,26 +61,29 @@ export class ShopService {
       })
       .pipe(
         map((response) => {
-          this.productCache.set(Object.values(this.shopParams).join('-'),response.body.data);
+          this.productCache.set(
+            Object.values(this.shopParams).join('-'),
+            response.body.data
+          );
           this.pagination = response.body;
           return this.pagination;
         })
       );
   }
 
-  setShopParams(params: ShopParams){
+  setShopParams(params: ShopParams) {
     this.shopParams = params;
   }
 
-  getShopParams(){
+  getShopParams() {
     return this.shopParams;
   }
 
   getProduct(id: number) {
-    let product : IProduct;
-    this.productCache.forEach((products : IProduct[]) => {
-      product = products.find(p => p.id === id);
-    })
+    let product: IProduct;
+    this.productCache.forEach((products: IProduct[]) => {
+      product = products.find((p) => p.id === id);
+    });
     if (product) {
       return of(product);
     }
@@ -85,12 +91,12 @@ export class ShopService {
   }
 
   getBrands() {
-    if(this.brands.length >0){
+    if (this.brands.length > 0) {
       return of(this.brands);
     }
 
     return this.http.get<IBrand[]>(this.baseUrl + 'product/brands').pipe(
-      map(response => {
+      map((response) => {
         this.brands = response;
         return response;
       })
@@ -98,13 +104,12 @@ export class ShopService {
   }
 
   getTypes() {
-
-    if(this.types.length > 0){
+    if (this.types.length > 0) {
       return of(this.types);
     }
 
     return this.http.get<IType[]>(this.baseUrl + 'product/types').pipe(
-      map(response => {
+      map((response) => {
         this.types = response;
         return response;
       })

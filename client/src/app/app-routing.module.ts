@@ -32,27 +32,28 @@ const routes: Routes = [
   },
   {
     path: 'basket',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./basket/basket.module').then((mod) => mod.BasketModule),
     data: { breadcrumb: 'Basket' },
   },
   {
     path: 'checkout',
-    canActivate:[AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./checkout/checkout.module').then((mod) => mod.CheckoutModule),
     data: { breadcrumb: 'Checkout' },
   },
   {
     path: 'account',
-    canActivate:[AuthGuard],
+
     loadChildren: () =>
       import('./account/account.module').then((mod) => mod.AccountModule),
-    data: { breadcrumb: {skip : true} },
+    data: { breadcrumb: { skip: true } },
   },
   {
     path: 'orders',
-    canActivate:[AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./orders/orders.module').then((mod) => mod.OrdersModule),
     data: { breadcrumb: 'Orders' },

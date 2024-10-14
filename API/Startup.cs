@@ -49,7 +49,7 @@ namespace API
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://anhdo-16092024-staging.s3-website-us-east-1.amazonaws.com");
                 });
             });
 
@@ -61,8 +61,8 @@ namespace API
             // if (env.IsDevelopment())
             // {
             //     app.UseDeveloperExceptionPage();
-            //     app.UseSwagger();
-            //     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             // }
             app.UseMiddleware<ExceptionMiddleware>();
 

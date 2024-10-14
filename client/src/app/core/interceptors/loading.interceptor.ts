@@ -16,6 +16,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    console.log(next.handle(req));
 
     if(req.method==='POST' && req.url.includes("order")){
       return next.handle(req);
@@ -26,7 +27,10 @@ export class LoadingInterceptor implements HttpInterceptor {
     if(req.url.includes("emailexists")){
       return next.handle(req);
     }
+    
     this.busyService.busy();
+
+
     return next.handle(req).pipe(
       delay(1000),
       finalize(() => {
