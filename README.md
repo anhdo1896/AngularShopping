@@ -13,16 +13,16 @@ This e-commerce platform allows users to browse, sort, filter, and purchase prod
 - `Deployment`:
     - `Front-End`: Amazon S3
     - `Back-End`: Azure App Service
-    - `Redis Server`: Amazon S2
+    - `Redis Server`: Amazon EC2
 
 
 ## Available script
 
-After clone this project, in the `client` project directory, you can run:
+After cloning this project, in the `client` project directory, you can run:
 
 ### `npm install`
 
-Install the necessary dependences.
+Install the necessary dependencies.
 
 ### `npm start`
 
